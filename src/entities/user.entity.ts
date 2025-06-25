@@ -25,10 +25,10 @@ export class User{
   @Column({ type: 'varchar', length: 256 })
   password: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
+  @Column({ name: 'profile_pic', type: 'varchar', length: 500, nullable: true })
   profilePic?: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ name: 'pic_filename',type: 'varchar', length: 100, nullable: true })
   picFilename?: string;
 
   @CreateDateColumn({ name: 'created_at' })

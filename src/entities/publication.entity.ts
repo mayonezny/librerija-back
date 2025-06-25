@@ -8,12 +8,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  Unique,
 } from 'typeorm';
 import { User } from './user.entity';
 import { PublicationType } from './publication-type.entity';
 import { Favorite } from './favorite.entity';
 
 @Entity('publications')
+@Unique(['name', 'author', 'year'])
 export class Publication {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
@@ -24,6 +27,7 @@ export class Publication {
   // внешний ключ на таблицу типов публикаций
   @ManyToOne(() => PublicationType, { nullable: false, onDelete: 'RESTRICT' })
   type: PublicationType;
+  @JoinColumn({ name: 'type' })
 
   @Column({ type: 'varchar', length: 100 })
   author: string;
@@ -33,11 +37,12 @@ export class Publication {
   // автор (FK на пользователей)
   @ManyToOne(() => User, user => user.publications, { nullable: false, onDelete: 'SET NULL' })
   uploader: User;
+  @JoinColumn({ name: 'uploader_uuid' })
 
   @Column({ type: 'varchar', length: 500 })
   file: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ name: 'file_format', type: 'varchar', length: 50, nullable: true })
   fileFormat?: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
