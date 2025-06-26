@@ -25,8 +25,9 @@ export class Publication {
 
   // внешний ключ на таблицу типов публикаций
   @ManyToOne(() => PublicationType, { nullable: false, onDelete: 'RESTRICT' })
-  type: PublicationType;
   @JoinColumn({ name: 'type' })
+  type: PublicationType;
+
   @Column({ type: 'varchar', length: 100 })
   author: string;
 
@@ -37,8 +38,9 @@ export class Publication {
     nullable: false,
     onDelete: 'SET NULL',
   })
-  uploader: User;
   @JoinColumn({ name: 'uploader_uuid' })
+  uploader: User;
+
   @Column({ type: 'varchar', length: 500 })
   file: string;
 

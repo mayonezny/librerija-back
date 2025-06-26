@@ -20,16 +20,16 @@ export class Favorite {
     nullable: false,
     onDelete: 'CASCADE',
   })
-  user: User;
   @JoinColumn({ name: 'user_uuid' })
+  user: User;
 
   /** FK на публикацию */
   @ManyToOne(() => Publication, (pub) => pub.favorites, {
     nullable: false,
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'publication_uuid' })
   publication: Publication;
-  @JoinColumn({ name: 'user_uuid' })
 
   /** created_at — автоматически NOW() */
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
