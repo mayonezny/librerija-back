@@ -16,8 +16,8 @@ async function bootstrap() {
       logger: true,
     }),
   );
-
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   // Swagger
   const config = new DocumentBuilder()
@@ -26,7 +26,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const doc = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, doc);
+  SwaggerModule.setup('/docs', app, doc);
 
   // MinIO / S3
   const s3Client = new S3Client({
