@@ -3,9 +3,9 @@ import {
   IsNotEmpty,
   Length,
   IsOptional,
-  IsDateString,
-  IsUrl,
   IsInt,
+  Max,
+  Min,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -21,13 +21,15 @@ export class CreatePublicationDto {
   author: string;
 
   @IsOptional()
-  @IsDateString()
-  year?: string; // хранит дату в формате YYYY-MM-DD
+  @Type(() => Number)
+  @IsInt()
+  @Min(-2000)
+  @Max(new Date().getFullYear())
+  year?: number;
 
   @IsString()
   @IsNotEmpty()
-  @IsUrl()
-  @Length(5, 500)
+  @Length(15, 500)
   file: string; // URL или путь в хранилище
 
   @IsInt()

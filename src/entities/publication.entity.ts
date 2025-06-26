@@ -31,8 +31,8 @@ export class Publication {
   @Column({ type: 'varchar', length: 100 })
   author: string;
 
-  @Column({ type: 'date', nullable: true })
-  year?: Date;
+  @Column({ type: 'integer', nullable: true })
+  year?: number;
   // автор (FK на пользователей)
   @ManyToOne(() => User, (user) => user.publications, {
     nullable: false,
