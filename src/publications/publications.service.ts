@@ -26,15 +26,22 @@ export class PublicationsService {
     );
   }
 
-  async search(
-    dto: SearchPublicationsDto,
-  ): Promise<{ data: Publication[]; total: number }> {
+  async findOne(uuid: string): Promise<Publication> {
+    const pub = await this.pubRepo.findOne({
+      where: { uuid },
+      relations: ['type', 'uploader'],
+    });
+    if (!pub) {
+      throw new NotFoundException(`Publication ${uuid} not found`);
+    }
+    return pub;
+  }
+
+  async search(dto: SearchPublicationsDto): Promise<{ data: Publication[]; total: number }> {
     const { search, page = 1, limit = 20 } = dto;
 
     // Строим условие: ищем по name или author
-    const where = search
-      ? [{ name: ILike(`%${search}%`) }, { author: ILike(`%${search}%`) }]
-      : {};
+    const where = search ? [{ name: ILike(`%${search}%`) }, { author: ILike(`%${search}%`) }] : {};
 
     const [data, total] = await this.pubRepo.findAndCount({
       where,
@@ -46,10 +53,7 @@ export class PublicationsService {
     return { data, total };
   }
 
-  async create(
-    dto: CreatePublicationDto,
-    uploaderUuid: string,
-  ): Promise<Publication> {
+  async create(dto: CreatePublicationDto, uploaderUuid: string): Promise<Publication> {
     const { type: typeId, ...rest } = dto;
     const pub = this.pubRepo.create({
       ...rest,
@@ -67,17 +71,6 @@ export class PublicationsService {
       }
       throw new InternalServerErrorException();
     }
-  }
-
-  async findOne(uuid: string): Promise<Publication> {
-    const pub = await this.pubRepo.findOne({
-      where: { uuid },
-      relations: ['type', 'uploader'],
-    });
-    if (!pub) {
-      throw new NotFoundException(`Publication ${uuid} not found`);
-    }
-    return pub;
   }
 
   async update(uuid: string, dto: UpdatePublicationDto): Promise<Publication> {

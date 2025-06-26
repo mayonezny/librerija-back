@@ -41,10 +41,7 @@ export class PublicationsController {
 
   /** Частичное обновление */
   @Patch(':id')
-  update(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() dto: UpdatePublicationDto,
-  ) {
+  update(@Param('id', new ParseUUIDPipe()) id: string, @Body() dto: UpdatePublicationDto) {
     return this.pubsService.update(id, dto);
   }
 
