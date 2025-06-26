@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import * as path from 'path';
@@ -14,5 +13,5 @@ export const AppDataSource = new DataSource({
   database: process.env.POSTGRES_DB,
   entities: [path.join(__dirname, 'src/**/*.entity.{ts,js}')],
   migrations: [path.join(__dirname, 'src/migrations/*.{ts,js}')],
-  synchronize: Boolean(process.env.TYPEORM_SYNCHRONIZE),      // миграций достаточно
+  synchronize: Boolean(process.env.TYPEORM_SYNCHRONIZE), // миграций достаточно
 });

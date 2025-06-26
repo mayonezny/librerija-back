@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,8 +10,7 @@ import { Publication } from './publication.entity';
 import { Favorite } from './favorite.entity';
 
 @Entity('users')
-export class User{
-
+export class User {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
 
@@ -28,7 +26,12 @@ export class User{
   @Column({ name: 'profile_pic', type: 'varchar', length: 500, nullable: true })
   profilePic?: string;
 
-  @Column({ name: 'pic_filename',type: 'varchar', length: 100, nullable: true })
+  @Column({
+    name: 'pic_filename',
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
   picFilename?: string;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -37,9 +40,9 @@ export class User{
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => Publication, pub => pub.uploader)
+  @OneToMany(() => Publication, (pub) => pub.uploader)
   publications: Publication[];
 
-  @OneToMany(() => Favorite, fav => fav.user)
+  @OneToMany(() => Favorite, (fav) => fav.user)
   favorites: Favorite[];
 }

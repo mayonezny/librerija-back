@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-// src/users/dto/create-user.dto.ts
 import { IsString, IsEmail, Length, IsOptional, IsUrl } from 'class-validator';
 
 export class CreateUserDto {

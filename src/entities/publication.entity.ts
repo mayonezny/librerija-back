@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // src/entities/publication.entity.ts
 import {
   Entity,
@@ -28,17 +27,18 @@ export class Publication {
   @ManyToOne(() => PublicationType, { nullable: false, onDelete: 'RESTRICT' })
   type: PublicationType;
   @JoinColumn({ name: 'type' })
-
   @Column({ type: 'varchar', length: 100 })
   author: string;
 
   @Column({ type: 'date', nullable: true })
   year?: Date;
   // автор (FK на пользователей)
-  @ManyToOne(() => User, user => user.publications, { nullable: false, onDelete: 'SET NULL' })
+  @ManyToOne(() => User, (user) => user.publications, {
+    nullable: false,
+    onDelete: 'SET NULL',
+  })
   uploader: User;
   @JoinColumn({ name: 'uploader_uuid' })
-
   @Column({ type: 'varchar', length: 500 })
   file: string;
 
@@ -51,6 +51,6 @@ export class Publication {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
 
-  @OneToMany(() => Favorite, fav => fav.publication)
-    favorites: Favorite[];
+  @OneToMany(() => Favorite, (fav) => fav.publication)
+  favorites: Favorite[];
 }

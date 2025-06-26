@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // src/users/dto/search-users.dto.ts
 import { IsOptional, IsString, Length, IsInt, Min } from 'class-validator';
 import { Type } from 'class-transformer';

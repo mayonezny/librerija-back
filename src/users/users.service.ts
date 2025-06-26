@@ -1,9 +1,13 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 // src/users/users.service.ts
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike, QueryFailedError } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -21,10 +25,7 @@ export class UsersService {
   async search(dto: SearchUsersDto): Promise<{ data: User[]; total: number }> {
     const { search, page = 1, limit = 20 } = dto;
     const where = search
-      ? [
-          { username: ILike(`%${search}%`) },
-          { email: ILike(`%${search}%`) },
-        ]
+      ? [{ username: ILike(`%${search}%`) }, { email: ILike(`%${search}%`) }]
       : {};
     const [data, total] = await this.userRepo.findAndCount({
       where,
@@ -47,18 +48,18 @@ export class UsersService {
       return await this.userRepo.save(user);
     } catch (error: unknown) {
       if (error instanceof QueryFailedError) {
-      const driverErr = (error as any).driverError;
-      if (driverErr.code === '23505') {
-        const detail: string = driverErr.detail || '';
-        if (detail.includes('username')) {
-          throw new ConflictException('Username already taken');
+        const driverErr = (error as any).driverError;
+        if (driverErr.code === '23505') {
+          const detail: string = driverErr.detail || '';
+          if (detail.includes('username')) {
+            throw new ConflictException('Username already taken');
+          }
+          if (detail.includes('email')) {
+            throw new ConflictException('Email already registered');
+          }
+          throw new ConflictException('Duplicate field value');
         }
-        if (detail.includes('email')) {
-          throw new ConflictException('Email already registered');
-        }
-        throw new ConflictException('Duplicate field value');
       }
-    }
       throw new InternalServerErrorException();
     }
   }
@@ -70,18 +71,18 @@ export class UsersService {
       return await this.userRepo.save(user);
     } catch (error: unknown) {
       if (error instanceof QueryFailedError) {
-      const driverErr = (error as any).driverError;
-      if (driverErr.code === '23505') {
-        const detail: string = driverErr.detail || '';
-        if (detail.includes('username')) {
-          throw new ConflictException('Username already taken');
+        const driverErr = (error as any).driverError;
+        if (driverErr.code === '23505') {
+          const detail: string = driverErr.detail || '';
+          if (detail.includes('username')) {
+            throw new ConflictException('Username already taken');
+          }
+          if (detail.includes('email')) {
+            throw new ConflictException('Email already registered');
+          }
+          throw new ConflictException('Duplicate field value');
         }
-        if (detail.includes('email')) {
-          throw new ConflictException('Email already registered');
-        }
-        throw new ConflictException('Duplicate field value');
       }
-    }
       throw new InternalServerErrorException();
     }
   }
@@ -92,5 +93,4 @@ export class UsersService {
       throw new NotFoundException(`User ${uuid} not found`);
     }
   }
-
 }
