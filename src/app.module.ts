@@ -7,6 +7,7 @@ import { AppDataSource } from '../data-source';
 import { UsersModule } from './users/users.module';
 import { PublicationsModule } from './publications/publications.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -14,6 +15,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     UsersModule,
     PublicationsModule,
     FavoritesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

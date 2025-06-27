@@ -36,11 +36,11 @@ export class UsersController {
   }
 
   // POST /users
-  @Post()
-  @HttpCode(201)
-  async create(@Body() dto: CreateUserDto) {
-    return this.usersService.create(dto);
-  }
+  // @Post()
+  // @HttpCode(201)
+  // async create(@Body() dto: CreateUserDto) {
+  //   return this.usersService.create(dto);
+  // }
 
   // PATCH /users/:id
   @UseGuards(JwtAccessGuard)

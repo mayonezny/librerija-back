@@ -1,12 +1,4 @@
-import {
-  IsString,
-  IsNotEmpty,
-  Length,
-  IsOptional,
-  IsInt,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsString, IsNotEmpty, Length, IsOptional, IsInt, Max, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreatePublicationDto {

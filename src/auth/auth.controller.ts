@@ -5,14 +5,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAccessGuard } from './guards/jwt-access.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import { Payload } from './auth.interfaces';
-
-type cookie = Record<string, string>;
-interface RequestWithUser extends FastifyRequest {
-  user: Payload;
-  cookies: cookie;
-}
-
+import { RequestWithUser } from './auth.interfaces';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

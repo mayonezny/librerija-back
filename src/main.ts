@@ -4,6 +4,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { S3Client } from '@aws-sdk/client-s3';
 import { ValidationPipe } from '@nestjs/common';
+import '@fastify/cookie';
 import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {

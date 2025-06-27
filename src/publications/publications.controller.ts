@@ -16,6 +16,7 @@ import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { SearchPublicationsDto } from './dto/search-publication.dto';
 import { JwtAccessGuard } from 'src/auth/guards/jwt-access.guard';
+import { RequestWithUser } from 'src/auth/auth.interfaces';
 
 @Controller('publications')
 export class PublicationsController {
@@ -32,8 +33,8 @@ export class PublicationsController {
   @UseGuards(JwtAccessGuard)
   @Post()
   @HttpCode(201)
-  create(@Body() dto: CreatePublicationDto, @Req() req: any) {
-    const uploaderUuid = '49e526e6-830d-45dc-84fc-d7ccbf112e89'; // req.user.uuid зависит от вашего AuthGuard //мок пока нет аутентификации
+  create(@Body() dto: CreatePublicationDto, @Req() req: RequestWithUser) {
+    const uploaderUuid = req.user.uuid; // req.user.uuid зависит от вашего AuthGuard //мок пока нет аутентификации
     return this.pubsService.create(dto, uploaderUuid);
   }
 

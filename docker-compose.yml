@@ -48,7 +48,7 @@ services:
     env_file: .env.development
     ports:
       - "8000:8000"
-    command: npm run start:dev
+    command: sh -c "npm install && npm run start:dev"
     volumes:
       - ./:/app
       - /app/node_modules

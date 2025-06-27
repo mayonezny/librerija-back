@@ -15,6 +15,7 @@ import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { SearchFavoritesDto } from './dto/search-favorite.dto';
 import { JwtAccessGuard } from 'src/auth/guards/jwt-access.guard';
+import { RequestWithUser } from 'src/auth/auth.interfaces';
 
 @Controller('favorites')
 export class FavoritesController {
@@ -28,8 +29,8 @@ export class FavoritesController {
   @UseGuards(JwtAccessGuard)
   @Post()
   @HttpCode(201)
-  create(@Body() dto: CreateFavoriteDto, @Req() req: any) {
-    const uploaderUuid = '5adc3c7a-3940-4105-b5f7-7a439ecfa9f3'; // req.user.uuid зависит от вашего AuthGuard //мок пока нет аутентификации
+  create(@Body() dto: CreateFavoriteDto, @Req() req: RequestWithUser) {
+    const uploaderUuid = req.user.uuid; // req.user.uuid зависит от вашего AuthGuard //мок пока нет аутентификации
     return this.favService.create(uploaderUuid, dto.publicationUuid);
   }
 
