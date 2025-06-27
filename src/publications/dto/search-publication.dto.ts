@@ -1,15 +1,5 @@
 // src/publications/dto/search-publications.dto.ts
-import {
-  IsOptional,
-  IsString,
-  Length,
-  IsInt,
-  Min,
-  Max,
-  IsUUID,
-  IsDateString,
-  IsIn,
-} from 'class-validator';
+import { IsOptional, IsString, Length, IsInt, Min, Max, IsDateString, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 type sortTypes = 'name' | 'author' | 'uploader' | 'year' | 'createdAt';
 export class SearchPublicationsDto {

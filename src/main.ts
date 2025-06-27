@@ -4,6 +4,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { S3Client } from '@aws-sdk/client-s3';
 import { ValidationPipe } from '@nestjs/common';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
   // Создаём приложение на Fastify
@@ -13,6 +14,12 @@ async function bootstrap() {
       logger: true,
     }),
   );
+
+  await app.register(fastifyCookie, {
+    secret: process.env.COOKIE_SECRET, // опционально: подпись
+    parseOptions: {}, // любые опции плагина
+  });
+
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
