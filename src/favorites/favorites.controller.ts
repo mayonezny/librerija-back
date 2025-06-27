@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  Query,
   Req,
   ParseUUIDPipe,
   HttpCode,
@@ -32,11 +31,13 @@ export class FavoritesController {
   }
 
   @Post('search/user')
+  @HttpCode(201)
   searchByUser(@Body() dto: SearchFavoritesDto) {
     return this.favService.findByUser(dto);
   }
 
   @Post('search/publication')
+  @HttpCode(201)
   searchByPublication(@Body() dto: SearchFavoritesDto) {
     return this.favService.findByPublication(dto);
   }

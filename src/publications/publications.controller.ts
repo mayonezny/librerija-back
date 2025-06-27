@@ -21,6 +21,7 @@ export class PublicationsController {
 
   /** Поиск публикаций */
   @Post('search')
+  @HttpCode(201)
   search(@Body() dto: SearchPublicationsDto) {
     return this.pubsService.search(dto);
   }

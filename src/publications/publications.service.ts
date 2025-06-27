@@ -38,18 +38,75 @@ export class PublicationsService {
   }
 
   async search(dto: SearchPublicationsDto): Promise<{ data: Publication[]; total: number }> {
-    const { search, page = 1, limit = 20 } = dto;
+    const qb = this.pubRepo
+      .createQueryBuilder('pub')
+      .leftJoinAndSelect('pub.type', 'type')
+      .leftJoinAndSelect('pub.uploader', 'uploader');
 
-    // Строим условие: ищем по name или author
-    const where = search ? [{ name: ILike(`%${search}%`) }, { author: ILike(`%${search}%`) }] : {};
+    if (dto.name) {
+      qb.andWhere('pub.name ILIKE :name', { name: `%${dto.name}%` });
+    }
+    if (dto.type) {
+      qb.andWhere('pub.type = :type', { type: dto.type });
+    }
+    if (dto.author) {
+      qb.andWhere('pub.author ILIKE :author', { author: `%${dto.author}%` });
+    }
+    if (dto.yearFrom) {
+      qb.andWhere('pub.year >= :yearFrom', { yearFrom: dto.yearFrom });
+    }
+    if (dto.yearTo) {
+      qb.andWhere('pub.year <= :yearTo', { yearTo: dto.yearTo });
+    }
+    if (dto.year) {
+      qb.andWhere('pub.year = :year', { year: dto.year });
+    }
+    if (dto.uploaderUsername) {
+      qb.andWhere('uploader.username = :uploaderUsername', {
+        uploaderUsername: dto.uploaderUsername,
+      });
+    }
+    if (dto.date) {
+      qb.andWhere('pub.createdAt = :date', { date: dto.date });
+    }
+    if (dto.dateFrom) {
+      qb.andWhere('pub.createdAt >= :dateFrom', { dateFrom: dto.dateFrom });
+    }
+    if (dto.dateTo) {
+      qb.andWhere('pub.createdAt <= :dateTo', { dateTo: dto.dateTo });
+    }
 
-    const [data, total] = await this.pubRepo.findAndCount({
-      where,
-      skip: (page - 1) * limit,
-      take: limit,
-      order: { createdAt: 'DESC' },
-    });
+    if (dto.sortBy) {
+      let sortField: string;
+      switch (dto.sortBy) {
+        case 'name':
+          sortField = 'pub.name';
+          break;
+        case 'author':
+          sortField = 'pub.author';
+          break;
+        case 'uploader':
+          sortField = 'uploader.username';
+          break;
+        case 'year':
+          sortField = 'pub.year';
+          break;
+        case 'createdAt':
+          sortField = 'pub.createdAt';
+          break;
+      }
+      const order: 'ASC' | 'DESC' = dto.sortOrder ?? 'ASC';
+      qb.orderBy(sortField, order);
+    } else {
+      // дефолтная сортировка
+      qb.orderBy('pub.createdAt', 'DESC');
+    }
+    // пагинация и сортировка
+    const page = dto.page ?? 1;
+    const limit = dto.limit ?? 20;
+    qb.skip((page - 1) * limit).take(limit);
 
+    const [data, total] = await qb.getManyAndCount();
     return { data, total };
   }
 
