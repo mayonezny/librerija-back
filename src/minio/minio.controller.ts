@@ -67,7 +67,7 @@ export class MinioController {
   async delete(@Req() req: RequestWithUser, @Body() dto: { url: string }) {
     // 1) Разбираем URL и извлекаем ключ внутри бакета:
     //    base = http://{MINIO_ENDPOINT}, bucket = this.bucket
-    const base = `http://{MINIO_ENDPOINT}/${this.minio.bucket}/`;
+    const base = `http://${process.env.MINIO_ENDPOINT}/${this.minio.bucket}/`;
     if (!dto.url.startsWith(base)) {
       throw new BadRequestException('URL does not belong to this bucket');
     }
