@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { PublicationsModule } from './publications/publications.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { AuthModule } from './auth/auth.module';
+import { MinioModule } from './minio/minio.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -16,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
     PublicationsModule,
     FavoritesModule,
     AuthModule,
+    MinioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

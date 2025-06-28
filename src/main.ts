@@ -6,6 +6,7 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { ValidationPipe } from '@nestjs/common';
 import '@fastify/cookie';
 import fastifyCookie from '@fastify/cookie';
+import fastifyMultipart from '@fastify/multipart';
 
 async function bootstrap() {
   // Создаём приложение на Fastify
@@ -23,7 +24,9 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-
+  await app.register(fastifyMultipart, {
+    limits: { fileSize: 1024 * 1024 * 1024 }, // до 1ГБ
+  });
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('Учебные материалы')
@@ -42,15 +45,15 @@ async function bootstrap() {
   SwaggerModule.setup('/docs', app, doc);
 
   // MinIO / S3
-  const s3Client = new S3Client({
-    region: 'us-east-1', // любая, если S3-совместимое
-    endpoint: `http://${process.env.MINIO_ENDPOINT}`,
-    credentials: {
-      accessKeyId: process.env.MINIO_ACCESS_KEY!,
-      secretAccessKey: process.env.MINIO_SECRET_KEY!,
-    },
-    forcePathStyle: true,
-  });
+  // const s3Client = new S3Client({
+  //   region: 'us-east-1', // любая, если S3-совместимое
+  //   endpoint: `http://${process.env.MINIO_ENDPOINT}`,
+  //   credentials: {
+  //     accessKeyId: process.env.MINIO_ACCESS_KEY!,
+  //     secretAccessKey: process.env.MINIO_SECRET_KEY!,
+  //   },
+  //   forcePathStyle: true,
+  // });
   const port = process.env.PORT || 8000;
   await app.listen(port, '0.0.0.0');
   console.log(`Server running on http://localhost:${port}`);
